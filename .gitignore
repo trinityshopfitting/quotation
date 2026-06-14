@@ -1,0 +1,15 @@
+# Local/system files
+.DS_Store
+*.log
+
+# Codex local/private state
+.codex/auth.json
+.codex/sessions/
+.codex/threads/
+.codex/memories/
+.codex/logs/
+
+# Generated outputs can be committed intentionally under examples/ when useful.
+outputs/
+work/
+
