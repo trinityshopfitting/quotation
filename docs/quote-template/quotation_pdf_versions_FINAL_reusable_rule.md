@@ -97,6 +97,10 @@ Reference density:
 Cover page rules:
 
 - White clean cover.
+- Before generating the cover, inspect the Excel workbook for embedded images.
+- If the workbook contains a Trinity Shopfitting logo image, extract and use that image on the cover.
+- Do not replace the Trinity Shopfitting logo with typed company-name text.
+- If no embedded logo is found, stop and ask Joe for the logo file instead of silently omitting it.
 - Place the Trinity Shopfitting logo near the top-left, not centered.
 - The cover logo should sit in the upper-left area with its left edge roughly aligned to the main content margin.
 - Do not place the logo at the top center.
@@ -437,6 +441,8 @@ Before delivering the PDF:
 - Confirm equipment subtotal includes `+ GST` when present.
 - Confirm final total matches Excel.
 - Confirm `TOTAL PRICE` appears before final notes.
+- Confirm the Excel workbook was inspected for embedded images before cover generation.
+- Confirm the actual Trinity Shopfitting logo image appears on the cover; typed company-name text alone is not acceptable.
 - Confirm page numbers exclude the cover page.
 - Confirm the cover logo is top-left, not centered.
 - Confirm the cover date appears at top-right.

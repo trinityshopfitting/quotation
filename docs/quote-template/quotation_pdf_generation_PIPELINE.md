@@ -27,6 +27,9 @@ Open the workbook and identify:
 - Final `TOTAL PRICE`.
 - Final notes.
 - Embedded logo if present.
+- Inspect workbook image objects/media files for the Trinity Shopfitting logo.
+- If a Trinity logo image is embedded, extract it for cover use.
+- If no logo image is found, ask Joe for the logo file before generating the final PDF.
 - Major section headers.
 - Ordinary section subtotal values.
 - Excel customer-facing summary rows.
@@ -127,7 +130,8 @@ Create:
 
 Cover:
 
-- Trinity logo top-left.
+- Actual Trinity Shopfitting logo image top-left.
+- Do not replace the logo with typed company-name text.
 - Date top-right.
 - `SHOPFITTING QUOTATION`.
 - Large project name.
@@ -214,6 +218,8 @@ Inspect at least:
 
 Check:
 
+- actual Trinity logo image is visible on the cover, top-left
+- typed company-name text is not being used as a substitute for the logo
 - no subtotal box protrudes beyond the table right edge
 - all subtotal boxes align with the table right edge
 - final `TOTAL PRICE` aligns with the same right edge

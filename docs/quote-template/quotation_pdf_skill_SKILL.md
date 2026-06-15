@@ -104,7 +104,10 @@ Common required labels:
 
 Use an A4 portrait customer-facing layout:
 
-- Cover page with Trinity logo top-left.
+- Cover page with the actual Trinity logo image top-left.
+- Before generating the cover, inspect the Excel workbook for embedded images and extract the Trinity logo when present.
+- Do not substitute typed company-name text for the logo image.
+- If no embedded logo is available, ask Joe for the logo file instead of silently omitting it.
 - Date top-right in `DD/MM/YYYY`.
 - Large project name on cover.
 - Gold underline below project name.
@@ -155,6 +158,9 @@ Before delivery, render/check the relevant pages visually. Do not rely only on g
 
 Before delivering:
 
+- Confirm the workbook was inspected for embedded images.
+- Confirm the actual Trinity logo image is visible on the cover, top-left.
+- Confirm the logo was not replaced by typed company-name text.
 - Confirm selected version was followed.
 - Confirm all customer-facing rows from A-E are represented.
 - Confirm every source row with QTY/UNIT in D-E is a visible PDF row.
