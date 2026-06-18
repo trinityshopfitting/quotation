@@ -1,5 +1,19 @@
 # AGENTS.md
 
+## Repository Startup Rule
+
+Before working in this repository, Codex must first read the global rules from:
+
+https://github.com/trinityshopfitting/codex-workspace-rules
+
+Read these files in order:
+
+1. `AGENTS.md`
+2. `00_全局工作台.md`
+3. `02_当前执行规则摘要.md`
+
+Only after reading this startup rule and the global rules may Codex continue with the rest of this repository's own Markdown files, including this `AGENTS.md`, `README.md`, docs, package files, source code, and project-specific instructions.
+
 ## Repository Purpose
 
 This repository stores quotation-related documentation, templates, workflows,
