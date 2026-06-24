@@ -10,9 +10,12 @@ Collect:
 - Requested version:
   - `1` = final total only, while preserving Excel summary rows.
   - `2` = ordinary section subtotals plus final total, while preserving Excel summary rows.
+  - `3` = small job breakdown, using customer-facing column F prices only when present.
 - Any reference PDF or reusable rule file.
 
-If the version is not specified, ask before generating.
+If the version is not specified, ask:
+
+> 选哪个版本？1: 总价  2: 带 breakdown  3: 小活 breakdown
 
 ## 2. Workbook Inspection
 
@@ -115,6 +118,28 @@ Mandatory:
 - If Excel has `Equipment Sub Total:`, show `EQUIPMENT SUB TOTAL`.
 - If Excel has `Equipment Works`, `Equipment Delivery`, and `Equipment Sub Total`, show all three in Excel order.
 - Do not treat `Equipment Sub Total` as a duplicate of `Equipment Works Sub Total` or `Equipment Delivery Sub Total`.
+
+### Version 3
+
+Use this for small-scope quotations only.
+
+Show:
+
+- all useful customer-facing scope rows from A-E
+- a separate light blue/grey price box only when the related Excel row has a customer-facing price in column F
+- any required ordinary subtotal or summary rows
+- final dark `TOTAL PRICE`
+- notes
+
+Mandatory:
+
+- Do not split every small scope item automatically.
+- Do not invent price boxes for rows with blank F.
+- Keep Excel order.
+- If a column F priced item is clearer as its own major item, create a small section for it.
+- For a small labour breakdown, use a table row like `NO. 1 / AREA: Labour Cost / QTY: 1 / UNIT: day` when that matches the customer-facing scope.
+- Price boxes must include `+ GST`.
+- Verify that pulled-out column F prices reconcile with subtotals and final total.
 
 ## 6. Build The PDF
 
@@ -249,4 +274,3 @@ When handing back the result, mention:
 - version used
 - whether summary rows were preserved
 - whether visual QA and reconciliation checks passed
-

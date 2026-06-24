@@ -26,7 +26,8 @@ Please read:
 3. docs/quote-template/quotation_pdf_generation_PIPELINE.md
 
 Then generate the quotation PDF from the provided Excel file.
-Ask whether to use version 1 or version 2 unless already specified.
+Ask: `选哪个版本？1: 总价  2: 带 breakdown  3: 小活 breakdown`
+unless the version is already specified.
 Run reconciliation checks and visual QA before returning the final PDF.
 ```
 
@@ -35,4 +36,6 @@ Important checks:
 - Do not omit Equipment Sub Total when it exists in Excel.
 - Do not omit Builder Margin when it exists in Excel.
 - Do not omit Construction Sub Total when it exists in Excel.
+- For small jobs using version 3, only pull out customer-facing prices that
+  exist in Excel column F; do not invent price boxes for blank-F rows.
 - Keep customer-facing PDF output polished and consistent with the selected version.

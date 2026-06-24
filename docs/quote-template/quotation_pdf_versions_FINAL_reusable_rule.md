@@ -1,12 +1,10 @@
 # Quotation PDF Versions - Updated Reusable Rules
 
-Joe's customer-facing quotation PDF has two standard price-display versions only.
+Joe's customer-facing quotation PDF has three standard price-display versions.
 
 Before making a customer PDF from an Excel quotation, ask:
 
-> Which version do you want?
-> 1. Final total only
-> 2. Section subtotals + final total
+> 选哪个版本？1: 总价  2: 带 breakdown  3: 小活 breakdown
 
 Do not assume the version unless Joe has already clearly specified it.
 
@@ -65,6 +63,38 @@ Rules:
 - The final total must align to the same right edge as the subtotal boxes.
 - Format final total like `$453,200.00 + GST`.
 - Place the final total after all section subtotals and before final notes.
+
+## Version 3: Small Job Breakdown
+
+Use this version only for small-scope quotations where Joe wants a clearer customer-facing breakdown and Excel contains customer-facing prices in column F.
+
+This does not change Version 1 or Version 2.
+
+Rules:
+
+- Do not split every small scope item automatically.
+- Only pull out a scope item as a separate breakdown price when Excel column F contains a customer-facing price for that row.
+- If column F is blank for a scope item, keep that item in the normal scope table and do not invent a separate price box for it.
+- Keep the visible scope order the same as Excel.
+- Keep the customer-facing scope row in the table when useful, then show its column F price directly below as a light blue/grey right-aligned price box.
+- If a column F priced row reads better as its own small major item, it may be shown as a separate section with its own table row and price box.
+- Price boxes must align to the same right edge as the main table and final total.
+- Amounts must include `+ GST` unless Joe explicitly asks otherwise.
+- After all small-job breakdown items, show any ordinary section subtotal or other summary rows that are present and useful, then show the final dark `TOTAL PRICE`.
+- Do not expose unrelated internal columns, supplier URLs, markup rows, or formulas.
+
+Example:
+
+- `Joinery Material`
+  - keep the material scope rows in the table
+  - show `MATERIAL COST` / `$798.00 + GST` from column F
+- `Labour Cost`
+  - show a table row such as `NO. 1 / AREA: Labour Cost / QTY: 1 / UNIT: day`
+  - show `LABOUR COST` / `$400.00 + GST` from column F
+- `Others`
+  - show the related scope rows
+  - show `OTHERS SUB TOTAL` / `$300.00 + GST`
+- `TOTAL PRICE` / `$1,498.00 + GST`
 
 ## Preferred Customer-Facing Layout
 
@@ -428,6 +458,13 @@ Before delivering the PDF:
 - If Version 2 is selected:
   - Confirm ordinary per-section subtotal boxes are shown after each major section when present.
   - Confirm Excel summary rows are also shown when present.
+- If Version 3 is selected:
+  - Confirm the quote is a small-scope quote or Joe explicitly requested small-job breakdown.
+  - Confirm only rows with customer-facing prices in Excel column F were pulled out as separate breakdown price boxes.
+  - Confirm rows with blank column F were not given invented price boxes.
+  - Confirm pulled-out column F prices remain in Excel order.
+  - Confirm pulled-out column F prices reconcile with section subtotals and final total.
+  - Confirm the actual PDF filename Joe will open was rendered and visually checked.
 - Confirm all customer-facing rows from columns A-E are represented, either as table rows or consolidated descriptions.
 - Confirm every source row with a nonblank QTY or UNIT in columns D-E appears as a separate visible row in the PDF.
 - Confirm internal columns F-M are not exposed.

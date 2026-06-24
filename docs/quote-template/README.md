@@ -18,8 +18,9 @@ Please read these three files and strictly follow them to generate a quotation P
 2. docs/quote-template/quotation_pdf_skill_SKILL.md
 3. docs/quote-template/quotation_pdf_generation_PIPELINE.md
 
-Ask me whether to use version 1 or version 2 unless I already specified it.
+Ask me: `选哪个版本？1: 总价  2: 带 breakdown  3: 小活 breakdown`
+unless I already specified it.
 After generating the PDF, run reconciliation checks and visual QA.
 Do not omit Equipment Sub Total, Builder Margin, or Construction Sub Total when they exist in the Excel source.
+For small jobs using version 3, only pull out customer-facing prices that exist in Excel column F.
 ```
-

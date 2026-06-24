@@ -14,13 +14,12 @@ Expected user inputs:
 - Desired version:
   - `1` = final total only, but preserve Excel summary rows.
   - `2` = ordinary section subtotals plus final total, and preserve Excel summary rows.
+  - `3` = small job breakdown, using customer-facing column F prices only when present.
 - Optional reference PDF or existing reusable rule file.
 
 If the user has not clearly specified the version, ask:
 
-> Which version do you want?
-> 1. Final total only
-> 2. Section subtotals + final total
+> 选哪个版本？1: 总价  2: 带 breakdown  3: 小活 breakdown
 
 Do not guess the version.
 
@@ -80,6 +79,38 @@ If Excel contains:
 then Version 2 must show all of them in that order. `EQUIPMENT SUB TOTAL` is required, not optional, and not a duplicate.
 
 All light blue/grey subtotal boxes and summary rows shown to the customer must include `+ GST` unless the user explicitly asks otherwise.
+
+## Version 3 Behavior
+
+Version 3 is for small-scope jobs only.
+
+Use Version 3 when the user chooses `3: 小活 breakdown` or clearly asks for the small-job breakdown style.
+
+Rules:
+
+- Do not change Version 1 or Version 2 behavior.
+- Do not split every small scope item automatically.
+- Only create a separate breakdown price box when Excel column F has a customer-facing price for that row.
+- If column F is blank, keep that item in the normal scope table and do not invent a price box.
+- Keep the order from Excel.
+- Keep useful scope rows visible in the table.
+- Show the column F price as a light blue/grey right-aligned price box directly after the related scope block.
+- If a column F priced item is clearer as its own small section, create that section with its own table row and price box.
+- All price boxes must include `+ GST` unless the user explicitly asks otherwise.
+- Do not expose unrelated internal supplier URLs, markup rows, formulas, or non-customer columns.
+
+Example small-job structure:
+
+- `Joinery Material`
+  - material scope rows
+  - `MATERIAL COST` / `$798.00 + GST`
+- `Labour Cost`
+  - table row: `NO. 1 / AREA: Labour Cost / QTY: 1 / UNIT: day`
+  - `LABOUR COST` / `$400.00 + GST`
+- `Others`
+  - related scope rows
+  - `OTHERS SUB TOTAL` / `$300.00 + GST`
+- `TOTAL PRICE`
 
 ## Summary Rows
 
@@ -186,4 +217,3 @@ Examples:
 - `Quotation_Kookai@Bowral.pdf`
 
 Do not leave URL-encoded names, plus signs, or `%40` in final PDF filenames.
-
