@@ -33,6 +33,9 @@ Do not guess the version.
 - Do not drop final sections such as Signage, Others, Equipment Works, Equipment Delivery, Builder Margin, Margin, or Equipment Sub Total.
 - Do not shorten the quote by deleting scope rows.
 - Use compact formatting instead of deleting content.
+- Preserve customer-facing Excel formatting from columns A-E, including highlights, red font, and strikethrough.
+- Do not merge styled rows into other rows unless Joe explicitly approves it.
+- Do not use whole-section keep-together behavior for normal scope sections when it creates large blank page areas.
 
 ## Version 1 Behavior
 
@@ -136,6 +139,7 @@ Common required labels:
 Use an A4 portrait customer-facing layout:
 
 - Cover page with Trinity logo top-left.
+- Preserve the Trinity logo aspect ratio. Do not stretch or squash the logo.
 - Date top-right in `DD/MM/YYYY`.
 - Large project name on cover.
 - Gold underline below project name.
@@ -153,6 +157,29 @@ Use an A4 portrait customer-facing layout:
   - `UNIT`
 - Use one consistent small readable table body font size.
 - Keep rows compact and readable.
+- Allow normal scope tables to split naturally across pages.
+- Keep only short final summary blocks together when needed, such as Builder Margin, final total, and notes.
+
+## Customer-Facing Formatting
+
+Excel columns A-E may contain customer-facing formatting that must remain visible in the PDF.
+
+Preserve:
+
+- yellow fills
+- blue fills
+- green fills, normalized to pale blue when Joe requests a consistent blue look
+- red font
+- strikethrough text
+- keyword-highlight warning, allowance, exclusion, lead-time, and client-supply rows
+
+Rules:
+
+- Scan formatting before building the PDF.
+- Preserve cell-level formatting where possible.
+- Do not convert all highlighted cells into generic whole-row yellow highlights.
+- Do not merge a styled source row into another row unless Joe explicitly approves it.
+- Build a formatting reconciliation count and fix the PDF if a customer-facing style is missing.
 
 ## Area / Location
 
@@ -180,6 +207,9 @@ Before delivery, render/check the relevant pages visually. Do not rely only on g
 - Final notes appear after final total.
 - Keep `Client Initial: ___________`.
 - Use readable bullet points.
+- Do not force notes onto a separate page when they fit below `TOTAL PRICE`.
+- Keep the notes block together. If notes cannot fit in the remaining space, move the whole notes block rather than splitting it across two pages.
+- If Builder Margin or Margin is a short final section, keep that section, its subtotal, `TOTAL PRICE`, and notes together when they fit.
 - Remove a duplicate note saying the quotation is based on drawings if the same drawing reference already appears on the cover under `DRAWINGS`.
 
 ## Required Validation
@@ -192,11 +222,19 @@ Before delivering:
 - Confirm internal columns F-M are not exposed.
 - Confirm final total matches Excel.
 - Confirm summary rows are present when Excel contains them.
+- Confirm customer-facing formatting from A-E is preserved:
+  - highlights
+  - red font
+  - strikethrough
 - For Version 1, confirm ordinary per-section subtotal boxes are hidden but Excel summary rows remain.
 - For Version 2, confirm ordinary section subtotals and Excel summary rows both remain.
 - Confirm all displayed subtotal/summary amounts include `+ GST`.
 - Confirm `EQUIPMENT SUB TOTAL` is present when Excel contains `Equipment Sub Total:`.
 - Confirm subtotal and total boxes align to the table right edge.
+- Confirm the cover logo is not stretched or squashed.
+- Confirm normal scope sections are not creating large blank areas because of whole-section keep-together behavior.
+- Confirm Builder Margin or Margin is not split awkwardly from its subtotal, final total, or notes when it is a final short section.
+- Confirm notes are not split across two pages.
 - Visually inspect at least:
   - cover
   - first detailed page

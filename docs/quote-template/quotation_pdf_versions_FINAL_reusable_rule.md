@@ -112,6 +112,8 @@ Overall:
 - Avoid switching body font size row by row just because a description is longer.
 - Avoid copying the Excel row-by-row appearance when rows are only continuation notes.
 - Do not make the document longer just because row completeness was enforced. After preserving all rows, tune font sizes, row heights, margins, and final-page flow to keep the quote compact.
+- Do not lock every major section as one unbreakable block. Long scope tables should be allowed to split naturally across pages so the PDF does not create large empty areas.
+- Keep only short final summary blocks together when needed, such as Builder Margin, Builder Margin Sub Total, `TOTAL PRICE`, and final notes.
 
 Reference density:
 
@@ -130,6 +132,9 @@ Cover page rules:
 - Place the Trinity Shopfitting logo near the top-left, not centered.
 - The cover logo should sit in the upper-left area with its left edge roughly aligned to the main content margin.
 - Do not place the logo at the top center.
+- Preserve the logo aspect ratio. Never stretch or squash the logo by forcing arbitrary width and height.
+- Calculate the logo height from the source image ratio, or use a rendering method that preserves aspect ratio.
+- Render-check the cover page before delivery to confirm the logo is not distorted.
 - Show the quotation date at the top-right in `DD/MM/YYYY` format, unless Joe requests another date format.
 - Include the title `SHOPFITTING QUOTATION` above the project name.
 - Show the project name in large bold text. If the project name has a brand and location, split it cleanly across lines.
@@ -221,6 +226,7 @@ Table columns:
 - Use one consistent, small readable table body font size.
 - Avoid oversized row padding.
 - Avoid large blank areas at the bottom of pages when another short section can fit.
+- Do not use whole-section `KeepTogether` behavior for normal scope sections. Keep the section heading near the start of the table, but allow table rows to continue across pages.
 - Right-align or center `QTY` and `UNIT`.
 - Do not include the extra `Quotation notes:` explanation block at the top.
 - Do not expose internal costing columns F-M unless Joe explicitly asks.
@@ -260,6 +266,7 @@ For each major section:
    - If Excel column B is a drawing reference, keep it in `AREA / LOCATION` rather than burying it in the description.
    - If the row has text but no QTY/UNIT, attach it to the nearest previous PDF row only when it is clearly a note/detail for that row.
    - If attaching a note would make the previous PDF row too dense or confusing, keep the note as a separate visible row with blank QTY/UNIT.
+   - If the source row in columns A-E has customer-facing formatting such as fill color, red font, or strikethrough, preserve that row as its own visible row unless Joe explicitly approves merging it. Merging styled rows often loses the customer's visual instruction.
 5. After all rows in the section are represented, add the section subtotal if Version 2 is selected.
 
 Do not:
@@ -325,6 +332,7 @@ Rules:
   - `EQUIPMENT SUB TOTAL` / `$99,082.30 + GST`
 - If there is an `Equipment Delivery` section, preserve it in the same order as Excel.
 - If there is a second Excel `Others` section used only for equipment delivery, it may be renamed customer-facing as `Equipment Delivery`, but its position must still follow the Excel order.
+- If `Builder Margin` or `Margin` appears as a short final section, do not split the Builder Margin heading, rows, subtotal, `TOTAL PRICE`, and notes awkwardly across pages. Keep that final block together when it fits.
 
 ## Subtotal And Total Alignment
 
@@ -397,11 +405,28 @@ Required validation before delivery:
 - Do not deliver the PDF if any section has fewer PDF QTY/UNIT rows than source QTY/UNIT rows unless Joe explicitly approved a manual omission.
 - Do not deliver the PDF if a long section's last source item cannot be found in the PDF text.
 
-## Highlight Rules
+## Excel Formatting / Highlight Rules
 
-- If Excel source rows are highlighted in customer-facing columns A-E, bring them into the PDF.
-- Highlight the whole PDF row, not just one cell.
-- Keyword highlights should also highlight the whole PDF row.
+Preserve customer-facing formatting from Excel columns A-E. Do not only look for yellow fills.
+
+Required source formatting to scan:
+
+- cell fill colors, including yellow, light blue, green, and other customer-facing highlights
+- font colors, especially red text
+- strikethrough text
+- keyword-highlight rows
+
+Rules:
+
+- If Excel source cells are highlighted in customer-facing columns A-E, bring those highlights into the PDF.
+- Preserve cell-level formatting where possible. Do not downgrade every styled cell into a generic whole-row yellow highlight.
+- Yellow fills should remain yellow.
+- Blue fills should remain blue or pale blue in the PDF.
+- Green fills may be normalized to the same pale blue style when Joe asks for a consistent blue look, but they must not disappear.
+- Red font must remain red in the PDF.
+- Strikethrough text must remain strikethrough in the PDF.
+- If a source row has special formatting in A-E, do not merge it into the previous row unless Joe explicitly approves it.
+- Keyword highlights may highlight the whole PDF row when the whole row is a customer-facing warning, allowance, lead time, exclusion, or client-supply note.
 - Highlight keywords include:
   - `Allowed Supplier`
   - `Allowed`
@@ -414,7 +439,13 @@ Required validation before delivery:
   - `Lead time`
   - `Leadtime`
   - `Provisional sum`
-- Use a pale yellow highlight that remains readable.
+- Use pale, readable highlight colors. Do not use dark fills that reduce legibility.
+- Build a formatting reconciliation check before delivery:
+  - count source rows/cells in A-E with fills
+  - count source rows/cells in A-E with red font
+  - count source rows/cells in A-E with strikethrough
+  - confirm the matching PDF text/rows preserve those styles
+  - do not deliver if a customer-facing highlight, red font, or strikethrough was lost
 
 ## Final Page And Notes
 
@@ -429,8 +460,10 @@ Final total and notes:
 - Do not use a large `NOTES` heading unless it matches the reference style.
 - The final page should be compact and balanced.
 - If the last sections are short, keep their tables, subtotals, final total, and notes together where possible.
+- If the last section is `Builder Margin` or `Margin`, keep that final short section with its subtotal, the final `TOTAL PRICE`, and notes when it fits.
 - Avoid leaving the final total alone on an otherwise empty page.
-- Avoid splitting the notes awkwardly unless unavoidable.
+- Do not force notes onto their own separate page if they fit below `TOTAL PRICE`.
+- Do not split notes across two pages. If notes cannot fit in the remaining space, move the whole notes block rather than splitting it.
 - If a note says the quotation is based on drawings and the same drawing reference is already shown on the cover under `DRAWINGS`, remove that duplicate note from the final notes.
 
 Final total style:
@@ -476,6 +509,7 @@ Before delivering the PDF:
 - Confirm `TOTAL PRICE` appears before final notes.
 - Confirm page numbers exclude the cover page.
 - Confirm the cover logo is top-left, not centered.
+- Confirm the cover logo is not stretched or squashed.
 - Confirm the cover date appears at top-right.
 - Confirm the footer is centered and stacked on multiple lines, not one long line.
 - Confirm detailed pages do not use a one-line company header at the top.
@@ -483,9 +517,17 @@ Before delivering the PDF:
 - Confirm subtotal boxes and the final total box align to the main table's right edge.
 - Confirm measurable child rows with blank Excel column B inherit the nearest appropriate parent area/location internally, while repeated visible area/location values are not duplicated unnecessarily.
 - Confirm final total/notes are not stranded alone on a mostly blank last page when final short sections could fit there.
+- Confirm normal scope sections are not over-protected with whole-section keep-together behavior that creates mostly blank pages.
+- Confirm final short sections, especially Builder Margin or Margin, are not split awkwardly from their subtotal, `TOTAL PRICE`, or notes.
 - Confirm proper bullets render in notes.
 - Confirm the cover does not show the old black document box.
 - Confirm highlighted Excel rows and keyword rows are highlighted in the PDF.
+- Confirm all customer-facing Excel styles from A-E are preserved in the PDF:
+  - yellow fills
+  - blue fills
+  - green fills normalized to blue if requested
+  - red font
+  - strikethrough
 - Visually inspect at least:
   - cover
   - first detailed scope page

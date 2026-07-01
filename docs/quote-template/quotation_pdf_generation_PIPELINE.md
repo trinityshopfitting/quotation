@@ -33,6 +33,10 @@ Open the workbook and identify:
 - Major section headers.
 - Ordinary section subtotal values.
 - Excel customer-facing summary rows.
+- Customer-facing cell formatting in columns A-E:
+  - fill colors, including yellow, blue, green, and other highlights
+  - red font or other customer-facing font colors
+  - strikethrough text
 
 Important summary rows to detect:
 
@@ -57,6 +61,8 @@ For each major section:
 7. Combine continuation/specification notes into the previous row only when they have no QTY/UNIT and are clearly descriptive.
 8. Never merge two rows that have different quantities or units.
 9. Preserve highlighted rows and keyword-highlight rows.
+10. Preserve customer-facing cell formatting from A-E, including fill colors, red font, and strikethrough.
+11. Do not merge a styled source row into another row unless Joe explicitly approves it. Styled rows often contain customer-facing emphasis.
 
 Keyword highlight examples:
 
@@ -153,6 +159,7 @@ Create:
 Cover:
 
 - Trinity logo top-left.
+- Preserve the Trinity logo aspect ratio. Calculate image height from the source ratio or use an image method that does not stretch the logo.
 - Date top-right.
 - `SHOPFITTING QUOTATION`.
 - Large project name.
@@ -177,6 +184,15 @@ Detailed pages:
   - `DESCRIPTION / SPECIFICATION`
   - `QTY`
   - `UNIT`
+- Allow normal scope tables to split naturally across pages.
+- Do not wrap entire ordinary sections in one unbreakable keep-together block, because that creates large blank page areas.
+- Keep only short final summary blocks together when needed, such as Builder Margin, final total, and notes.
+- Preserve Excel cell formatting in the table body:
+  - yellow highlights stay yellow
+  - blue highlights stay blue or pale blue
+  - green highlights may be normalized to pale blue when Joe wants a consistent blue look
+  - red font stays red
+  - strikethrough stays strikethrough
 
 ## 7. Price Box Styling
 
@@ -202,6 +218,9 @@ After `TOTAL PRICE`, add notes:
 - Use bullet points.
 - Keep `Client Initial: ___________`.
 - Remove duplicate drawing-basis note if the drawing reference already appears on the cover.
+- Do not force notes onto a separate page when they fit below `TOTAL PRICE`.
+- Keep the notes block together. If notes cannot fit in the remaining space, move the whole notes block rather than splitting it across two pages.
+- If Builder Margin or Margin is the final short section, keep the section, its subtotal, `TOTAL PRICE`, and notes together when they fit.
 
 ## 9. Reconciliation Checks
 
@@ -214,6 +233,11 @@ Produce or perform a reconciliation check:
 - Confirm the last item in each section appears in the PDF.
 - Confirm all source major sections appear.
 - Confirm all required summary rows appear when present in Excel.
+- Confirm customer-facing styles from A-E are preserved:
+  - highlighted fills
+  - red font
+  - strikethrough
+- Count source rows/cells with special formatting and compare against the rendered PDF text/rows.
 
 Reject the PDF and fix it if:
 
@@ -223,6 +247,8 @@ Reject the PDF and fix it if:
 - Internal columns F-M appear.
 - `TOTAL PRICE` is wrong.
 - `EQUIPMENT SUB TOTAL` is missing when Excel contains it.
+- a customer-facing highlight, red font, or strikethrough from A-E is missing.
+- the cover logo is visibly stretched or squashed.
 
 ## 10. Visual QA
 
@@ -239,13 +265,17 @@ Inspect at least:
 
 Check:
 
+- cover logo is not stretched or squashed
 - no subtotal box protrudes beyond the table right edge
 - all subtotal boxes align with the table right edge
 - final `TOTAL PRICE` aligns with the same right edge
 - body font size is consistent
+- yellow/blue/green highlights, red font, and strikethrough from Excel are visible in the PDF
 - area/location duplicates are not repeated unnecessarily
-- notes are readable and not awkwardly split if avoidable
+- notes are readable and not split across two pages
 - final total is not stranded on a mostly blank page if it can be avoided
+- normal sections are not creating large blank areas because of whole-section keep-together behavior
+- Builder Margin or Margin, when it is a final short section, is not split awkwardly from its subtotal, final total, or notes
 
 ## 11. Output Files
 
