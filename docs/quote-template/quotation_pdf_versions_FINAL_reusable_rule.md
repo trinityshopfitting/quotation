@@ -64,6 +64,22 @@ Rules:
 - Format final total like `$453,200.00 + GST`.
 - Place the final total after all section subtotals and before final notes.
 
+## Optional Customer-Facing Breakdown Columns
+
+Some quotes may contain a special customer-facing breakdown column for one section, such as a Joinery `BREAKDOWN PRICE` column in Excel column H.
+
+This is optional and uncommon. Do not add a breakdown price column by default.
+
+Rules:
+
+- Default visible scope content is still columns A-E only.
+- Add an extra breakdown column only when Joe explicitly says that Excel column is customer-facing, or the Excel header clearly identifies it as a customer-facing breakdown price column.
+- Apply the extra column only to the relevant section, for example `Joinery Works`; do not add it to every trade unless the Excel source clearly has that structure for every trade.
+- Preserve the Excel order of those breakdown prices.
+- Do not expose unrelated internal costing columns, formulas, supplier notes, markup, or margin columns.
+- If the breakdown column is a line-item breakdown, do not append `+ GST` to each breakdown cell unless Joe specifically asks for it. Keep `+ GST` on subtotal, summary, and final total boxes.
+- Reconcile the displayed breakdown values against the section subtotal when possible.
+
 ## Version 3: Small Job Breakdown
 
 Use this version only for small-scope quotations where Joe wants a clearer customer-facing breakdown and Excel contains customer-facing prices in column F.
@@ -167,6 +183,14 @@ Cover positioning:
 
 Detailed scope pages should be compact and customer-facing.
 
+## Mandatory Table QA For All Quotes
+
+These table rules apply to every quotation and every version: Version 1, Version 2, and Version 3.
+
+- Scope table page splits must never leave an open bottom edge. When a scope table is cut by a page break, add a bottom horizontal line to the last visible row of every page fragment.
+- Scope table body row spacing must be consistent. Use the same body line-height and top/bottom padding across the same table. Rows may become taller only when the text genuinely wraps.
+- These are not project-specific exceptions. They must be checked before delivering every quote PDF.
+
 Page header/footer:
 
 - Show the quotation date at the top-right of every detailed scope page.
@@ -222,14 +246,18 @@ Table columns:
   - `UNIT`
 - Use a dark navy table header with white uppercase text.
 - Use thin light grid lines.
+- Follow the Excel horizontal border/grouping logic for scope tables; do not invent odd row divisions that make the table look unlike the source.
+- When a scope table splits across pages, automatically add a bottom horizontal line to the last visible row of every page fragment so no table is left open at the bottom.
 - Keep rows compact.
 - Use one consistent, small readable table body font size.
+- Use consistent body row line-height and top/bottom padding across the same table. Rows may grow only because the content genuinely wraps; do not create random tall/short rows from inconsistent spacing.
 - Avoid oversized row padding.
 - Avoid large blank areas at the bottom of pages when another short section can fit.
 - Do not use whole-section `KeepTogether` behavior for normal scope sections. Keep the section heading near the start of the table, but allow table rows to continue across pages.
 - Right-align or center `QTY` and `UNIT`.
 - Do not include the extra `Quotation notes:` explanation block at the top.
 - Do not expose internal costing columns F-M unless Joe explicitly asks.
+- Do not add extra price/breakdown columns to ordinary scope tables unless the source has a clearly customer-facing breakdown column or Joe explicitly asks for that column.
 
 ## Area / Location Rules
 
@@ -447,6 +475,18 @@ Rules:
   - confirm the matching PDF text/rows preserve those styles
   - do not deliver if a customer-facing highlight, red font, or strikethrough was lost
 
+## Spelling And Typo Check
+
+Every quotation must be checked for obvious spelling mistakes in customer-facing table text before delivery.
+
+Rules:
+
+- Check all visible scope table text, section labels, subtotal/summary labels, and notes.
+- Automatically correct obvious spelling mistakes and common typos, especially in trade descriptions, notes, and customer-facing warnings.
+- Do not change brand names, product names, material codes, finish codes, drawing references, dimensions, addresses, proper nouns, or intentional abbreviations unless the source clearly contains a typo.
+- Keep technical meaning unchanged. If a correction could change scope or commercial meaning, leave it unchanged and flag it instead of guessing.
+- Include spelling corrections in the reconciliation/check summary when corrections were applied.
+
 ## Final Page And Notes
 
 Final total and notes:
@@ -461,6 +501,7 @@ Final total and notes:
 - The final page should be compact and balanced.
 - If the last sections are short, keep their tables, subtotals, final total, and notes together where possible.
 - If the last section is `Builder Margin` or `Margin`, keep that final short section with its subtotal, the final `TOTAL PRICE`, and notes when it fits.
+- If notes do not fit with `Builder Margin` / `Margin` and `TOTAL PRICE`, do not let the notes block drag `Builder Margin` or `TOTAL PRICE` onto a new mostly blank page. Split the layout into two keep-together blocks: final summary block (`Builder Margin` / `Margin`, its subtotal, and `TOTAL PRICE`) first, then the notes block.
 - Avoid leaving the final total alone on an otherwise empty page.
 - Do not force notes onto their own separate page if they fit below `TOTAL PRICE`.
 - Do not split notes across two pages. If notes cannot fit in the remaining space, move the whole notes block rather than splitting it.
@@ -491,6 +532,8 @@ Before delivering the PDF:
 - If Version 2 is selected:
   - Confirm ordinary per-section subtotal boxes are shown after each major section when present.
   - Confirm Excel summary rows are also shown when present.
+  - Confirm any optional extra breakdown column is shown only when the Excel source/user request makes it customer-facing, and only for the relevant section.
+  - Confirm optional line-item breakdown prices do not show `+ GST` unless Joe requested it.
 - If Version 3 is selected:
   - Confirm the quote is a small-scope quote or Joe explicitly requested small-job breakdown.
   - Confirm only rows with customer-facing prices in Excel column F were pulled out as separate breakdown price boxes.
@@ -502,6 +545,7 @@ Before delivering the PDF:
 - Confirm every source row with a nonblank QTY or UNIT in columns D-E appears as a separate visible row in the PDF.
 - Confirm internal columns F-M are not exposed.
 - Confirm section subtotals match the Excel major-section totals when using Version 2.
+- Confirm visible table text was checked for obvious spelling mistakes and corrected where safe.
 - Confirm all light blue/grey subtotal boxes include `+ GST`.
 - Confirm construction summary rows include `+ GST`.
 - Confirm equipment subtotal includes `+ GST` when present.
@@ -515,10 +559,13 @@ Before delivering the PDF:
 - Confirm detailed pages do not use a one-line company header at the top.
 - Confirm section subtotal boxes are right-aligned compact boxes, not full-width rows.
 - Confirm subtotal boxes and the final total box align to the main table's right edge.
+- Confirm scope table horizontal lines follow the Excel grouping and every page-split table fragment has a closed bottom line.
+- Confirm scope table body rows use consistent line-height and padding; avoid uneven row heights except where longer wrapped content requires it.
 - Confirm measurable child rows with blank Excel column B inherit the nearest appropriate parent area/location internally, while repeated visible area/location values are not duplicated unnecessarily.
 - Confirm final total/notes are not stranded alone on a mostly blank last page when final short sections could fit there.
 - Confirm normal scope sections are not over-protected with whole-section keep-together behavior that creates mostly blank pages.
 - Confirm final short sections, especially Builder Margin or Margin, are not split awkwardly from their subtotal, `TOTAL PRICE`, or notes.
+- Confirm notes did not drag Builder Margin or `TOTAL PRICE` onto a new page when those final summary items could fit on the previous page.
 - Confirm proper bullets render in notes.
 - Confirm the cover does not show the old black document box.
 - Confirm highlighted Excel rows and keyword rows are highlighted in the PDF.
