@@ -27,7 +27,9 @@ Do not guess the version.
 
 - Read only customer-facing scope columns A-E for visible scope content.
 - Do not expose internal costing columns F-M unless the user explicitly asks.
-- Extra price/breakdown columns are not default. Add one only when the user explicitly says it is customer-facing, or the Excel header clearly identifies it as a customer-facing breakdown price column.
+- Extra price/breakdown columns are not default, but every workbook must be scanned for them during inspection, especially inside `Joinery Works`.
+- Add an optional breakdown column when the user explicitly says it is customer-facing, when the Excel header clearly identifies it as a customer-facing breakdown price column, or when a dedicated line-item price column reconciles to the section subtotal.
+- If `Joinery Works` contains customer-facing line-item breakdown prices, such as a `BREAKDOWN PRICE` / Excel column H breakdown in Kookai quotes, the PDF must show a `BREAKDOWN PRICE` column in the Joinery table.
 - Apply an optional breakdown column only to the relevant section, such as Joinery, not to every quote or every section.
 - Do not append `+ GST` to optional line-item breakdown prices unless the user asks; keep `+ GST` on subtotals, summary rows, and final total.
 - Every customer-facing row with QTY or UNIT in D-E must be represented as its own visible PDF row.
@@ -171,6 +173,7 @@ Mandatory table QA for every quote and every version:
 - Keep only short final summary blocks together when needed, such as Builder Margin, final total, and notes.
 - Follow Excel horizontal borders/grouping for scope tables.
 - When a scope table splits across pages, automatically add a bottom horizontal line to the last visible row of each page fragment.
+- Do not leave any ordinary section subtotal stranded at the top of the next page. If a section subtotal would be orphaned, split the last few table rows earlier so the final table fragment and its subtotal stay together.
 - Do not add `BREAKDOWN PRICE` or similar extra columns unless the source/user request makes that column customer-facing for that specific section.
 
 ## Customer-Facing Formatting
@@ -234,8 +237,13 @@ Before delivering:
 - Confirm all customer-facing rows from A-E are represented.
 - Confirm every source row with QTY/UNIT in D-E is a visible PDF row.
 - Confirm internal columns F-M are not exposed.
-- Confirm optional breakdown columns are not invented. If used, confirm they appear only in the relevant section, preserve Excel order, and line-item values do not show `+ GST` unless requested.
+- Confirm optional breakdown columns are not invented.
+- Confirm every workbook was scanned for customer-facing breakdown columns, especially `Joinery Works`.
+- If Joinery has a customer-facing breakdown column, confirm the PDF includes `BREAKDOWN PRICE`, all breakdown amounts are present in Excel order, and line-item values do not show `+ GST` unless requested.
+- If an optional breakdown column is used, confirm it appears only in the relevant section and does not leak internal costing data.
 - Check all visible table text, section labels, subtotal/summary labels, and notes for obvious spelling mistakes. Automatically correct safe typos without changing scope meaning.
+- At minimum, scan for common quote typos such as `counterop`, `Shopfloor`, `paper work`, `leadtime`, `onsite inspection`, `Supply by client`, `tape ware`, and `Illuminate signage`.
+- Do not treat material names, colour names, finish names, brand names, or dimensions as typos only because a dictionary does not recognize them.
 - Do not change brand names, product names, material/finish codes, drawing references, dimensions, addresses, proper nouns, or intentional abbreviations unless the source clearly contains a typo.
 - Log spelling corrections when applied.
 - Confirm final total matches Excel.

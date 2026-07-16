@@ -63,9 +63,11 @@ For each major section:
 9. Preserve highlighted rows and keyword-highlight rows.
 10. Preserve customer-facing cell formatting from A-E, including fill colors, red font, and strikethrough.
 11. Do not merge a styled source row into another row unless Joe explicitly approves it. Styled rows often contain customer-facing emphasis.
-12. Check for optional customer-facing breakdown columns outside A-E only when Joe explicitly mentions them or the Excel header clearly says they are for customer-facing breakdown prices.
-13. If an optional breakdown column exists, add it only to the relevant section, preserve its order, and do not expose unrelated internal costing columns.
-14. Do not append `+ GST` to optional line-item breakdown prices unless Joe asks; keep `+ GST` on subtotal, summary, and final total boxes.
+12. Always scan for optional customer-facing breakdown columns outside A-E during workbook inspection, especially inside `Joinery Works`.
+13. Treat a breakdown column as customer-facing when Joe explicitly mentions it, when the Excel header clearly says `BREAKDOWN PRICE` or similar, or when a dedicated line-item price column reconciles to the section subtotal.
+14. If `Joinery Works` has customer-facing line-item prices, such as Excel column H in Kookai quotes, add a `BREAKDOWN PRICE` column to the Joinery table and preserve every displayed amount in Excel order.
+15. Add optional breakdown columns only to the relevant section, and do not expose unrelated internal costing columns, formulas, supplier notes, markup, or margin columns.
+16. Do not append `+ GST` to optional line-item breakdown prices unless Joe asks; keep `+ GST` on subtotal, summary, and final total boxes.
 
 Keyword highlight examples:
 
@@ -198,6 +200,7 @@ Detailed pages:
 - Keep only short final summary blocks together when needed, such as Builder Margin, final total, and notes.
 - Follow Excel horizontal borders/grouping for scope tables.
 - When a scope table is split across pages, automatically close each page fragment with a bottom horizontal line on the last visible row.
+- Do not leave any ordinary section subtotal stranded at the top of the next page. If a section subtotal would be orphaned, split the last few table rows earlier so the final table fragment and its subtotal stay together.
 - Do not add optional extra columns such as `BREAKDOWN PRICE` by default. Add them only for sections where the Excel source/user request clearly makes that column customer-facing.
 - Keep body row line-height and top/bottom padding consistent across the same scope table. Uneven row heights are acceptable only when text wraps naturally.
 - Preserve Excel cell formatting in the table body:
@@ -247,8 +250,12 @@ Produce or perform a reconciliation check:
 - Confirm the last item in each section appears in the PDF.
 - Confirm all source major sections appear.
 - Confirm all required summary rows appear when present in Excel.
+- Confirm every workbook was scanned for customer-facing breakdown columns outside A-E, especially `Joinery Works`.
+- If Joinery has a customer-facing breakdown column, count the source breakdown amounts, confirm the PDF includes `BREAKDOWN PRICE`, and confirm every breakdown amount appears in Excel order without `+ GST` unless requested.
 - If an optional customer-facing breakdown column was used, confirm it appears only in the relevant section, preserves Excel order, does not leak internal costing data, and does not add `+ GST` to line-item prices unless requested.
 - Check visible table text, section labels, subtotal/summary labels, and notes for obvious spelling mistakes. Automatically correct safe typos without changing scope meaning.
+- At minimum, scan for common quote typos such as `counterop`, `Shopfloor`, `paper work`, `leadtime`, `onsite inspection`, `Supply by client`, `tape ware`, and `Illuminate signage`.
+- Do not treat material names, colour names, finish names, brand names, or dimensions as typos only because a dictionary does not recognize them.
 - Do not change brand names, product names, material/finish codes, drawing references, dimensions, addresses, proper nouns, or intentional abbreviations unless the source clearly contains a typo.
 - Log any spelling corrections that were applied.
 - Confirm customer-facing styles from A-E are preserved:
@@ -264,6 +271,7 @@ Reject the PDF and fix it if:
 - A source summary row is missing.
 - Internal columns F-M appear.
 - An optional breakdown column is invented or applied to sections where Excel/user request did not ask for it.
+- A customer-facing Joinery breakdown column exists in Excel but the PDF omits `BREAKDOWN PRICE` or misses any breakdown amount.
 - `TOTAL PRICE` is wrong.
 - `EQUIPMENT SUB TOTAL` is missing when Excel contains it.
 - a customer-facing highlight, red font, or strikethrough from A-E is missing.

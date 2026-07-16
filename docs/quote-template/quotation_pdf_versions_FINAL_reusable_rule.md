@@ -73,12 +73,15 @@ This is optional and uncommon. Do not add a breakdown price column by default.
 Rules:
 
 - Default visible scope content is still columns A-E only.
-- Add an extra breakdown column only when Joe explicitly says that Excel column is customer-facing, or the Excel header clearly identifies it as a customer-facing breakdown price column.
+- During workbook inspection, always scan the relevant section range, especially `Joinery Works`, for a customer-facing breakdown price column outside A-E.
+- Add an extra breakdown column when Joe explicitly says that Excel column is customer-facing, when the Excel header clearly identifies it as a customer-facing breakdown price column, or when a section has a dedicated line-item price column whose values reconcile to that section subtotal.
+- For Joinery, do not miss `BREAKDOWN PRICE` / line-item breakdown values such as Excel column H in Kookai quotes. If the Joinery line-item prices are present, the PDF must include a `BREAKDOWN PRICE` column in the Joinery table.
 - Apply the extra column only to the relevant section, for example `Joinery Works`; do not add it to every trade unless the Excel source clearly has that structure for every trade.
 - Preserve the Excel order of those breakdown prices.
 - Do not expose unrelated internal costing columns, formulas, supplier notes, markup, or margin columns.
 - If the breakdown column is a line-item breakdown, do not append `+ GST` to each breakdown cell unless Joe specifically asks for it. Keep `+ GST` on subtotal, summary, and final total boxes.
 - Reconcile the displayed breakdown values against the section subtotal when possible.
+- Final QA must fail if a customer-facing Joinery breakdown exists in Excel but the generated PDF does not show the breakdown column and all displayed breakdown amounts.
 
 ## Version 3: Small Job Breakdown
 
@@ -254,6 +257,8 @@ Table columns:
 - Avoid oversized row padding.
 - Avoid large blank areas at the bottom of pages when another short section can fit.
 - Do not use whole-section `KeepTogether` behavior for normal scope sections. Keep the section heading near the start of the table, but allow table rows to continue across pages.
+- Do not leave any ordinary section subtotal box stranded by itself at the top of the next page.
+- This applies to every section subtotal, not only Joinery. If a subtotal would be pushed to the next page alone, split the last few table rows earlier so the final table fragment and its subtotal appear together.
 - Right-align or center `QTY` and `UNIT`.
 - Do not include the extra `Quotation notes:` explanation block at the top.
 - Do not expose internal costing columns F-M unless Joe explicitly asks.
@@ -487,6 +492,19 @@ Rules:
 - Keep technical meaning unchanged. If a correction could change scope or commercial meaning, leave it unchanged and flag it instead of guessing.
 - Include spelling corrections in the reconciliation/check summary when corrections were applied.
 
+Common quote typos to catch:
+
+- `counterop` -> `counter top`
+- `Shopfloor` -> `Shop floor`
+- `paper work` -> `paperwork`
+- `leadtime` -> `lead time`
+- `onsite inspection` -> `on-site inspection`
+- `Supply by client` / `Supply by client; Installation only` -> `Supplied by client` / `Supplied by client; installation only`
+- `tape ware` -> `tapware`
+- `Illuminate signage` -> `Illuminated signage`
+
+Do not treat material names, colour names, finish names, brand names, or dimensions as typos only because a dictionary does not recognize them, for example `Fugebella`, `Kerakoll`, `breccia fantastica`, `malta, oatmeal`, `mmD`, or `mmH`.
+
 ## Final Page And Notes
 
 Final total and notes:
@@ -533,6 +551,8 @@ Before delivering the PDF:
   - Confirm ordinary per-section subtotal boxes are shown after each major section when present.
   - Confirm Excel summary rows are also shown when present.
   - Confirm any optional extra breakdown column is shown only when the Excel source/user request makes it customer-facing, and only for the relevant section.
+  - Confirm every workbook was scanned for Joinery/customer-facing breakdown prices.
+  - If Joinery has a breakdown price column, confirm `BREAKDOWN PRICE` appears in the Joinery table, every breakdown amount appears in Excel order, and no line-item breakdown amount has `+ GST` unless Joe requested it.
   - Confirm optional line-item breakdown prices do not show `+ GST` unless Joe requested it.
 - If Version 3 is selected:
   - Confirm the quote is a small-scope quote or Joe explicitly requested small-job breakdown.
