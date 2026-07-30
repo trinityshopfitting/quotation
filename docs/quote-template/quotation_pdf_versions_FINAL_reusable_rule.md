@@ -618,10 +618,21 @@ Minimum reconciliation report:
 For final customer PDF files, use Joe's preferred readable naming style:
 
 - `Quotation_{Project Brand}@{Location}.pdf`
+- `Quotation_{Project Brand}@{Location}_{Scope}.pdf` when one workbook produces multiple scope-specific quotations.
 
 Examples:
 
 - `Quotation_Fat Pomelo@Balgowlah.pdf`
 - `Quotation_Kookai@Bowral.pdf`
+- `Quotation_Reuben Hills Cafe@Surry Hills_Roof Repairs.pdf`
 
 Use spaces in the brand name when appropriate. Do not leave URL-encoded names, plus signs, or `%40` in the final PDF filename.
+
+Version-number rules:
+
+- The first issued PDF must not include `_V1` in its filename.
+- Only add a version suffix when the same quotation is updated after its first issue.
+- Start later updates at `_V2`, then continue with `_V3`, `_V4`, and so on.
+- Place the version suffix at the end, after any scope descriptor.
+- Example first issue: `Quotation_Reuben Hills Cafe@Surry Hills_Roof Repairs.pdf`
+- Example updated issue: `Quotation_Reuben Hills Cafe@Surry Hills_Roof Repairs_V2.pdf`

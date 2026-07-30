@@ -277,10 +277,14 @@ Before delivering:
 Use readable final filenames:
 
 - `Quotation_{Project Brand}@{Location}.pdf`
+- `Quotation_{Project Brand}@{Location}_{Scope}.pdf` when separate scope PDFs are created from one workbook.
 
 Examples:
 
 - `Quotation_Fat Pomelo@Balgowlah.pdf`
 - `Quotation_Kookai@Bowral.pdf`
+- `Quotation_Reuben Hills Cafe@Surry Hills_Roof Repairs.pdf`
 
 Do not leave URL-encoded names, plus signs, or `%40` in final PDF filenames.
+
+Do not include `_V1` on the first issued PDF. Add a version suffix only for later updates to the same quotation, beginning with `_V2` and continuing sequentially (`_V3`, `_V4`, and so on). Put the version suffix last, after any scope descriptor.

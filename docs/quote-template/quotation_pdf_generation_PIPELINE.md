@@ -319,13 +319,23 @@ Save:
 Final PDF naming:
 
 - `Quotation_{Project Brand}@{Location}.pdf`
+- `Quotation_{Project Brand}@{Location}_{Scope}.pdf` for multiple scope-specific quotations from one workbook.
 
 Examples:
 
 - `Quotation_Fat Pomelo@Balgowlah.pdf`
 - `Quotation_Kookai@Bowral.pdf`
+- `Quotation_Reuben Hills Cafe@Surry Hills_Roof Repairs.pdf`
 
 Do not use URL-encoded filenames, plus signs, or `%40`.
+
+Version-number rules:
+
+- Do not add `_V1` to the first issued PDF.
+- When the same quotation is updated after the first issue, start at `_V2`.
+- Continue later revisions sequentially as `_V3`, `_V4`, and so on.
+- Put the version suffix after any scope descriptor.
+- Example: first issue `Quotation_Reuben Hills Cafe@Surry Hills_Roof Repairs.pdf`; next issue `Quotation_Reuben Hills Cafe@Surry Hills_Roof Repairs_V2.pdf`.
 
 ## 12. Delivery Response
 
