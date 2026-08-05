@@ -13,7 +13,7 @@ Expected user inputs:
 - Source Excel quotation file, usually `.xlsx`.
 - Desired version:
   - `1` = final total only, but preserve Excel summary rows.
-  - `2` = ordinary section subtotals plus final total, and preserve Excel summary rows.
+  - `2` = ordinary section subtotals plus final total; preserve required Excel summary rows but hide `Construction Sub Total`.
   - `3` = small job breakdown, using customer-facing column F prices only when present.
 - Optional reference PDF or existing reusable rule file.
 
@@ -34,7 +34,7 @@ Do not guess the version.
 - Do not append `+ GST` to optional line-item breakdown prices unless the user asks; keep `+ GST` on subtotals, summary rows, and final total.
 - Every customer-facing row with QTY or UNIT in D-E must be represented as its own visible PDF row.
 - Preserve all major sections present in the source workbook.
-- Preserve all Excel customer-facing summary rows when present.
+- Preserve all Excel customer-facing summary rows when present, except that Version 2 hides `Construction Sub Total` from the customer PDF.
 - Do not drop final sections such as Signage, Others, Equipment Works, Equipment Delivery, Builder Margin, Margin, or Equipment Sub Total.
 - Do not shorten the quote by deleting scope rows.
 - Use compact formatting instead of deleting content.
@@ -72,10 +72,12 @@ Version 1 ends with a dark right-aligned `TOTAL PRICE` box.
 Version 2 means the client should see:
 
 1. Ordinary section subtotal boxes after each major section when applicable.
-2. All Excel customer-facing summary rows when present.
+2. Required Excel customer-facing summary rows when present, except `Construction Sub Total`.
 3. Final dark `TOTAL PRICE`.
 
 Do not treat Excel summary rows as duplicates of ordinary section subtotals.
+
+In Version 2, do not display `CONSTRUCTION SUB TOTAL`, even if it exists in Excel. Read it and use it for reconciliation only. This exception does not apply to Builder Margin, Margin, Equipment Sub Total, or other required summaries.
 
 If Excel contains:
 
@@ -126,11 +128,12 @@ Not every workbook has Builder Margin, Construction Sub Total, Equipment Works, 
 
 Rules:
 
-- If Excel has the row, preserve it.
+- If Excel has the row, preserve it unless a version-specific rule explicitly hides it.
 - If Excel does not have the row, do not invent it.
 - Keep the row in the same order and relative position as Excel.
 - Do not merge it into another subtotal.
-- Do not hide it in Version 1 or Version 2.
+- Version 1 preserves every real Excel summary row.
+- Version 2 preserves required summary rows but hides `Construction Sub Total` from the customer PDF.
 
 Common required labels:
 
@@ -210,7 +213,7 @@ Rules:
 All price summary boxes must align to the same right edge as the main table:
 
 - ordinary light blue/grey section subtotals
-- construction summary block
+- construction summary block when the selected version displays it
 - `EQUIPMENT SUB TOTAL`
 - dark `TOTAL PRICE`
 
@@ -246,14 +249,16 @@ Before delivering:
 - Do not treat material names, colour names, finish names, brand names, or dimensions as typos only because a dictionary does not recognize them.
 - Do not change brand names, product names, material/finish codes, drawing references, dimensions, addresses, proper nouns, or intentional abbreviations unless the source clearly contains a typo.
 - Log spelling corrections when applied.
+- Treat explicit user corrections as authoritative for the current quote. Apply them only to the intended text and verify each corrected value in the final PDF.
+- If the user corrects a project or brand name, use the corrected spelling and capitalization consistently on the cover, detailed-scope subtitle, project information, and filename.
 - Confirm final total matches Excel.
-- Confirm summary rows are present when Excel contains them.
+- Confirm required summary rows are present when Excel contains them, subject to the Version 2 `Construction Sub Total` exception.
 - Confirm customer-facing formatting from A-E is preserved:
   - highlights
   - red font
   - strikethrough
 - For Version 1, confirm ordinary per-section subtotal boxes are hidden but Excel summary rows remain.
-- For Version 2, confirm ordinary section subtotals and Excel summary rows both remain.
+- For Version 2, confirm ordinary section subtotals and required Excel summary rows remain, and confirm `CONSTRUCTION SUB TOTAL` is not displayed.
 - Confirm all displayed subtotal/summary amounts include `+ GST`.
 - Confirm `EQUIPMENT SUB TOTAL` is present when Excel contains `Equipment Sub Total:`.
 - Confirm subtotal and total boxes align to the table right edge.
@@ -268,7 +273,7 @@ Before delivering:
   - cover
   - first detailed page
   - a normal section subtotal page
-  - construction summary page if present
+  - construction summary page if present and the selected version displays it
   - equipment subtotal/final total page
   - final notes page
 
@@ -287,4 +292,4 @@ Examples:
 
 Do not leave URL-encoded names, plus signs, or `%40` in final PDF filenames.
 
-Do not include `_V1` on the first issued PDF. Add a version suffix only for later updates to the same quotation, beginning with `_V2` and continuing sequentially (`_V3`, `_V4`, and so on). Put the version suffix last, after any scope descriptor.
+Do not include `_V1` on the first issued PDF. Add a version suffix only when a later update is intended as a substantive new customer issue, beginning with `_V2` and continuing sequentially (`_V3`, `_V4`, and so on). Spelling, capitalization, filename, layout, pagination, and regeneration fixes do not automatically create a new version; keep the current filename unless the user requests a separate versioned issue. Put any version suffix last, after the scope descriptor.

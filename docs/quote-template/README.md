@@ -21,6 +21,6 @@ Please read these three files and strictly follow them to generate a quotation P
 Ask me: `选哪个版本？1: 总价  2: 带 breakdown  3: 小活 breakdown`
 unless I already specified it.
 After generating the PDF, run reconciliation checks and visual QA.
-Do not omit Equipment Sub Total, Builder Margin, or Construction Sub Total when they exist in the Excel source.
+Do not omit Equipment Sub Total or Builder Margin when they exist in the Excel source. Preserve Construction Sub Total in Version 1, but do not display it in Version 2; still use it for reconciliation.
 For small jobs using version 3, only pull out customer-facing prices that exist in Excel column F.
 ```

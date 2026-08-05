@@ -15,5 +15,6 @@ and reusable Codex guidance.
 - Preserve the difference between version 1 and version 2 output.
 - Always run reconciliation checks against the source Excel data.
 - Always perform visual QA on generated PDFs before considering the task complete.
-- Never omit Equipment Sub Total, Builder Margin, or Construction Sub Total when present in the source Excel.
+- Never omit Equipment Sub Total or Builder Margin when present in the source Excel.
+- Preserve Construction Sub Total in Version 1. In Version 2, read it for reconciliation but do not display it in the customer PDF.
 - Keep credentials, private customer data, and raw local Codex state out of Git.

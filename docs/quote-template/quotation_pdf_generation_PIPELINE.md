@@ -9,7 +9,7 @@ Collect:
 - Excel source workbook path.
 - Requested version:
   - `1` = final total only, while preserving Excel summary rows.
-  - `2` = ordinary section subtotals plus final total, while preserving Excel summary rows.
+  - `2` = ordinary section subtotals plus final total; preserve required Excel summary rows but hide `Construction Sub Total`.
   - `3` = small job breakdown, using customer-facing column F prices only when present.
 - Any reference PDF or reusable rule file.
 
@@ -37,6 +37,7 @@ Open the workbook and identify:
   - fill colors, including yellow, blue, green, and other highlights
   - red font or other customer-facing font colors
   - strikethrough text
+- Any explicit user corrections supplied in the current conversation. These override the corresponding Excel text for the customer PDF and must be applied only to the intended target.
 
 Important summary rows to detect:
 
@@ -120,12 +121,14 @@ Show:
 
 - all detailed scope rows
 - ordinary section subtotal boxes after each major section when applicable
-- all Excel customer-facing summary rows when present
+- required Excel customer-facing summary rows when present, except `Construction Sub Total`
 - final dark `TOTAL PRICE`
 - notes
 
 Mandatory:
 
+- If Excel has `Construction Sub Total:`, read it and use it for reconciliation, but do not display it in a Version 2 customer PDF.
+- The Version 2 `Construction Sub Total` exception does not apply to Builder Margin, Margin, Equipment Sub Total, or other required summaries.
 - If Excel has `Equipment Sub Total:`, show `EQUIPMENT SUB TOTAL`.
 - If Excel has `Equipment Works`, `Equipment Delivery`, and `Equipment Sub Total`, show all three in Excel order.
 - Do not treat `Equipment Sub Total` as a duplicate of `Equipment Works Sub Total` or `Equipment Delivery Sub Total`.
@@ -215,7 +218,7 @@ Detailed pages:
 Use:
 
 - Light blue/grey compact right-aligned boxes for ordinary section subtotals and regular summary rows.
-- A stronger dark navy row for major construction subtotal if useful.
+- A stronger dark navy row for a major construction subtotal when the selected version permits it to be displayed.
 - Dark navy compact right-aligned box for final `TOTAL PRICE`.
 
 All displayed subtotal/summary/final amounts should include `+ GST` unless the user explicitly asks otherwise.
@@ -223,7 +226,7 @@ All displayed subtotal/summary/final amounts should include `+ GST` unless the u
 All price boxes must align to the main table right edge:
 
 - ordinary section subtotals
-- construction summary block
+- construction summary block when the selected version displays it
 - `EQUIPMENT SUB TOTAL`
 - `TOTAL PRICE`
 
@@ -249,7 +252,7 @@ Produce or perform a reconciliation check:
 - Confirm no section has fewer PDF QTY/UNIT rows than source QTY/UNIT rows.
 - Confirm the last item in each section appears in the PDF.
 - Confirm all source major sections appear.
-- Confirm all required summary rows appear when present in Excel.
+- Confirm all required summary rows appear when present in Excel, subject to the Version 2 `Construction Sub Total` exception.
 - Confirm every workbook was scanned for customer-facing breakdown columns outside A-E, especially `Joinery Works`.
 - If Joinery has a customer-facing breakdown column, count the source breakdown amounts, confirm the PDF includes `BREAKDOWN PRICE`, and confirm every breakdown amount appears in Excel order without `+ GST` unless requested.
 - If an optional customer-facing breakdown column was used, confirm it appears only in the relevant section, preserves Excel order, does not leak internal costing data, and does not add `+ GST` to line-item prices unless requested.
@@ -258,6 +261,8 @@ Produce or perform a reconciliation check:
 - Do not treat material names, colour names, finish names, brand names, or dimensions as typos only because a dictionary does not recognize them.
 - Do not change brand names, product names, material/finish codes, drawing references, dimensions, addresses, proper nouns, or intentional abbreviations unless the source clearly contains a typo.
 - Log any spelling corrections that were applied.
+- Confirm every explicit user correction appears exactly as requested in the final PDF and did not alter unrelated text.
+- If the user corrected a project or brand name, confirm the corrected form is consistent on the cover, detailed-scope subtitle, project information, and filename.
 - Confirm customer-facing styles from A-E are preserved:
   - highlighted fills
   - red font
@@ -268,7 +273,7 @@ Reject the PDF and fix it if:
 
 - A QTY/UNIT row is missing.
 - A section is missing.
-- A source summary row is missing.
+- A required source summary row is missing, except for `Construction Sub Total` intentionally hidden in Version 2.
 - Internal columns F-M appear.
 - An optional breakdown column is invented or applied to sections where Excel/user request did not ask for it.
 - A customer-facing Joinery breakdown column exists in Excel but the PDF omits `BREAKDOWN PRICE` or misses any breakdown amount.
@@ -287,7 +292,7 @@ Inspect at least:
 - cover page
 - first detailed scope page
 - one ordinary section subtotal page
-- construction summary page if present
+- construction summary page if present and the selected version permits it to be displayed
 - equipment subtotal/final total page
 - notes page
 
@@ -332,7 +337,9 @@ Do not use URL-encoded filenames, plus signs, or `%40`.
 Version-number rules:
 
 - Do not add `_V1` to the first issued PDF.
-- When the same quotation is updated after the first issue, start at `_V2`.
+- When the same quotation is issued as a substantive new customer version after the first issue, start at `_V2`.
+- Do not automatically increment the version for spelling, capitalization, filename, layout, pagination, or PDF regeneration fixes. Keep the current filename unless the user requests a separate versioned issue.
+- If the user explicitly says not to change the version number, preserve the existing filename/version.
 - Continue later revisions sequentially as `_V3`, `_V4`, and so on.
 - Put the version suffix after any scope descriptor.
 - Example: first issue `Quotation_Reuben Hills Cafe@Surry Hills_Roof Repairs.pdf`; next issue `Quotation_Reuben Hills Cafe@Surry Hills_Roof Repairs_V2.pdf`.

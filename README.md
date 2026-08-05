@@ -35,7 +35,7 @@ Important checks:
 
 - Do not omit Equipment Sub Total when it exists in Excel.
 - Do not omit Builder Margin when it exists in Excel.
-- Do not omit Construction Sub Total when it exists in Excel.
+- Preserve Construction Sub Total in Version 1. In Version 2, use it for reconciliation but do not display it in the customer PDF.
 - For small jobs using version 3, only pull out customer-facing prices that
   exist in Excel column F; do not invent price boxes for blank-F rows.
 - Keep customer-facing PDF output polished and consistent with the selected version.
