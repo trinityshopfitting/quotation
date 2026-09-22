@@ -175,6 +175,7 @@ Mandatory table QA for every quote and every version:
 - Allow normal scope tables to split naturally across pages.
 - Keep only short final summary blocks together when needed, such as Builder Margin, final total, and notes.
 - Follow Excel horizontal borders/grouping for scope tables.
+- Use thin, medium-contrast grey-blue table borders that stay visible when printed. Avoid overly pale grid lines.
 - When a scope table splits across pages, automatically add a bottom horizontal line to the last visible row of each page fragment.
 - Do not leave any ordinary section subtotal stranded at the top of the next page. If a section subtotal would be orphaned, split the last few table rows earlier so the final table fragment and its subtotal stay together.
 - Do not add `BREAKDOWN PRICE` or similar extra columns unless the source/user request makes that column customer-facing for that specific section.

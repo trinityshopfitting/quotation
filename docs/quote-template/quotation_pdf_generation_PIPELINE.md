@@ -202,6 +202,7 @@ Detailed pages:
 - Do not wrap entire ordinary sections in one unbreakable keep-together block, because that creates large blank page areas.
 - Keep only short final summary blocks together when needed, such as Builder Margin, final total, and notes.
 - Follow Excel horizontal borders/grouping for scope tables.
+- Use thin, medium-contrast grey-blue table borders that remain visible in printed output; reject near-white or overly pale grid lines during visual QA.
 - When a scope table is split across pages, automatically close each page fragment with a bottom horizontal line on the last visible row.
 - Do not leave any ordinary section subtotal stranded at the top of the next page. If a section subtotal would be orphaned, split the last few table rows earlier so the final table fragment and its subtotal stay together.
 - Do not add optional extra columns such as `BREAKDOWN PRICE` by default. Add them only for sections where the Excel source/user request clearly makes that column customer-facing.

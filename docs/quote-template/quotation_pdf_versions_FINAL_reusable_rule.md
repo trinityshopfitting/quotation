@@ -250,7 +250,7 @@ Table columns:
   - `QTY`
   - `UNIT`
 - Use a dark navy table header with white uppercase text.
-- Use thin light grid lines.
+- Use thin, medium-contrast grey-blue grid lines. Borders must remain clearly visible when printed; do not use near-white or overly pale grid colours.
 - Follow the Excel horizontal border/grouping logic for scope tables; do not invent odd row divisions that make the table look unlike the source.
 - When a scope table splits across pages, automatically add a bottom horizontal line to the last visible row of every page fragment so no table is left open at the bottom.
 - Keep rows compact.
