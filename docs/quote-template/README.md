@@ -22,7 +22,9 @@ Ask me: `选哪个版本？1: 总价  2: 带 breakdown  3: 小活 breakdown`
 unless I already specified it.
 After generating the PDF, run reconciliation checks and visual QA.
 Do not omit Equipment Sub Total or Builder Margin when they exist in the Excel source. Preserve Construction Sub Total in Version 1, but do not display it in Version 2; still use it for reconciliation.
-In Version 2, hide only the exact `Construction Sub Total` row. Keep ordinary `Sub Total`, `10% Margin` / `10% Builder Margin`, and every other customer-facing Excel summary row in Excel order.
+In Version 2, hide only the exact `Construction Sub Total` row by default. When Builder Margin exists, ordinary `Sub Total` is also hidden and retained only for reconciliation.
+In Version 2, render Builder Margin / 10% Margin in the Kookai Parramatta style as its own section/table followed by `BUILDER MARGIN SUB TOTAL`, then `TOTAL PRICE`.
+Version 1 keeps its original behavior: preserve Excel summary rows, including ordinary `Sub Total` and Builder Margin, in Excel order.
 For breakdown prices, use the verified customer-facing sell-price cells, not hidden internal cost totals. Reconcile section prices to the source subtotal and final total, and never allow an empty expected-summary list to pass QA when summary labels exist in Excel.
 For small jobs using version 3, only pull out customer-facing prices that exist in Excel column F.
 ```

@@ -130,7 +130,9 @@ Mandatory:
 
 - If Excel has `Construction Sub Total:`, read it and use it for reconciliation, but do not display it in a Version 2 customer PDF.
 - Hide only a row whose normalized label is exactly `Construction Sub Total`. Do not treat `Sub Total`, `10% Margin`, `10% Builder Margin`, or another summary label as the same row.
-- If Excel contains `Sub Total` and `10% Margin` / `10% Builder Margin`, show both in Excel order before `TOTAL PRICE` and preserve their source amounts.
+- If Excel contains ordinary `Sub Total` without Builder Margin, preserve it in Excel order before `TOTAL PRICE`.
+- In Version 2, when Builder Margin / 10% Margin exists, do not display the ordinary `Sub Total` row. Continue reading and using its source value for reconciliation.
+- In Version 2, whenever Builder Margin / 10% Margin exists, render a separate `BUILDER MARGIN` section with the normal table header, one row (`NO. 1`, `AREA / LOCATION: Builder Margin`, `DESCRIPTION / SPECIFICATION: 10% Margin`), a `BUILDER MARGIN SUB TOTAL` box, then `TOTAL PRICE`.
 - The Version 2 `Construction Sub Total` exception does not apply to Builder Margin, Margin, Equipment Sub Total, or other required summaries.
 - If Excel has `Equipment Sub Total:`, show `EQUIPMENT SUB TOTAL`.
 - If Excel has `Equipment Works`, `Equipment Delivery`, and `Equipment Sub Total`, show all three in Excel order.
@@ -255,7 +257,9 @@ Produce or perform a reconciliation check:
 - For Version 2, identify each section's customer-facing sell price from the workbook layout/formula chain. Do not use an internal cost column merely because it contains a convenient section sum.
 - Confirm displayed section sell prices add to the source `Sub Total` when that row exists.
 - Confirm `Sub Total + Margin = Total Price` using the source values, within a rounding tolerance of $0.02.
-- Confirm every detected summary label and amount appears exactly once in the PDF, except the exact `Construction Sub Total` row intentionally hidden in Version 2.
+- Confirm every detected summary label and amount appears exactly once in the PDF, except the exact `Construction Sub Total` row intentionally hidden in Version 2 and ordinary `Sub Total` hidden by the Version 2 Builder Margin rule.
+- In Version 2, when a standalone Builder Margin block exists, confirm the ordinary `Sub Total` amount is absent from the PDF and still use the source value for `Sub Total + Margin = Total Price`.
+- In Version 2, whenever Builder Margin exists, confirm the Builder Margin section title, row, `BUILDER MARGIN SUB TOTAL`, amount, and following `TOTAL PRICE` all appear together and in that order.
 - List each section.
 - Count source rows with QTY/UNIT.
 - Count PDF rows with QTY/UNIT.
@@ -284,7 +288,9 @@ Reject the PDF and fix it if:
 - A QTY/UNIT row is missing.
 - A section is missing.
 - A required source summary row is missing, except for `Construction Sub Total` intentionally hidden in Version 2.
-- `Sub Total` or `10% Margin` / `10% Builder Margin` is omitted because the Version 2 `Construction Sub Total` exception was applied too broadly.
+- `10% Margin` / `10% Builder Margin` is omitted because the Version 2 `Construction Sub Total` exception was applied too broadly.
+- In Version 2, ordinary `Sub Total` is displayed together with the standard standalone Builder Margin block, or its hidden source value is no longer used for reconciliation.
+- Version 2 contains Builder Margin but it remains only a compact summary row instead of the required separate section and subtotal.
 - A Version 2 section subtotal uses an internal raw-cost value instead of the verified customer-facing sell price.
 - Source summary labels exist but reconciliation passes with an empty expected-summary list.
 - Displayed section prices do not reconcile to source `Sub Total`, or source `Sub Total + Margin` does not reconcile to `Total Price`.

@@ -23,7 +23,7 @@ Rules:
   - `SIGNAGE SUB TOTAL`
   - other normal per-section subtotal boxes
 - Do not hide customer-facing Excel summary rows just because Version 1 is selected.
-- If Excel contains summary rows such as `Sub total:`, `10 % Builder Margin:`, `Construction Sub Total:`, or `Equipment Sub Total:`, show those rows explicitly in the PDF.
+- If Excel contains summary rows such as `Sub total:`, `10 % Builder Margin:`, `Construction Sub Total:`, or `Equipment Sub Total:`, show those rows explicitly in the Version 1 PDF.
 - Preserve these Excel summary rows in the same order and location as the Excel source.
 - Do not merge Builder Margin, Construction Sub Total, or Equipment Sub Total into the final total only.
 - Do not invent Builder Margin, Construction Sub Total, or Equipment Sub Total if they are not in the Excel source.
@@ -47,7 +47,7 @@ Use this version when the client needs to see each major trade/category subtotal
 Rules:
 
 - Add a subtotal after each major section, such as flooring, plastering, painting, electrical, fire service, plumbing, stainless steel, shopfront, stone, glazing, cool room, joinery, signage, others, equipment, equipment delivery, and margin if present.
-- Version 2 must show ordinary section subtotal boxes and customer-facing Excel summary rows when they exist, except `Construction Sub Total`.
+- Version 2 must show ordinary section subtotal boxes and customer-facing Excel summary rows when they exist, except `Construction Sub Total` and ordinary `Sub Total` when Builder Margin exists.
 - Do not treat Excel summary rows as duplicates of section subtotals.
 - In Version 2, do not display `CONSTRUCTION SUB TOTAL`, even when that row exists in Excel. Still read it and use it for reconciliation checks.
 - This Version 2 exception does not apply to Builder Margin, Margin, Equipment Sub Total, or other required customer-facing summaries.
@@ -331,9 +331,9 @@ The rule is not to force these rows into every PDF. The rule is:
 - Do not move summary rows to a different part of the quote unless Joe explicitly asks.
 - Do not hide, merge away, or swallow required rows inside another total, except for `Construction Sub Total` intentionally hidden in Version 2.
 - Do not invent summary rows that are not in the Excel source.
-- Version 1 preserves all real Excel summary rows, including `Construction Sub Total`.
-- Version 2 preserves real Excel summary rows except `Construction Sub Total`, which must be hidden from the customer PDF while still being used for reconciliation.
-- The Version 2 exception is an exact normalized-label rule. Hide only `Construction Sub Total`; never hide ordinary `Sub Total`, `10% Margin`, `10% Builder Margin`, Equipment Sub Total, or another summary because its label contains `subtotal` or `margin`.
+- Version 1 preserves all real Excel summary rows, including ordinary `Sub Total`, Builder Margin, and `Construction Sub Total`.
+- Version 2 preserves real Excel summary rows except `Construction Sub Total`, and also hides ordinary `Sub Total` when Builder Margin exists. Hidden values must still be used for reconciliation.
+- Match `Construction Sub Total` by exact normalized label; do not confuse it with ordinary `Sub Total`, Builder Margin, Equipment Sub Total, or another summary. Ordinary `Sub Total` may be hidden only under the Version 2 standalone Builder Margin rule or an explicit quote-specific instruction.
 - Version 1 hides ordinary per-section subtotals, but it still preserves these Excel summary rows.
 - Version 2 shows ordinary per-section subtotals and preserves the remaining required Excel summary rows.
 
@@ -348,10 +348,12 @@ Common summary rows that may appear:
 Rules:
 
 - If Excel shows `10 % Builder Margin`, show it explicitly.
-- If Excel shows ordinary `Sub Total` and `10% Margin` / `10% Builder Margin`, show both explicitly in Excel order before `TOTAL PRICE`, including in Version 2.
+- In Version 1, preserve ordinary `Sub Total` and Builder Margin in Excel order before `TOTAL PRICE`.
+- In Version 2, preserve ordinary `Sub Total` when Builder Margin is absent.
+- In Version 2, if Builder Margin / `10% Margin` exists, do not display ordinary `Sub Total`. Keep its source value in reconciliation, then show the standard Builder Margin block and `TOTAL PRICE`.
 - If Excel shows `Construction Sub Total`, show it explicitly in Version 1 but do not display it in Version 2.
 - If Excel shows `Equipment Sub Total`, show it explicitly.
-- In Version 1, do not treat these rows as optional section subtotals. They are Excel summary rows and must remain visible.
+- In Version 1, do not treat these rows as optional section subtotals. They must remain visible.
 - In Version 1, ordinary section subtotal boxes are hidden, but the following summary block must still remain visible if present:
   - `SUB TOTAL`
   - `10% BUILDER MARGIN`
@@ -371,6 +373,18 @@ Rules:
 - If there is an `Equipment Delivery` section, preserve it in the same order as Excel.
 - If there is a second Excel `Others` section used only for equipment delivery, it may be renamed customer-facing as `Equipment Delivery`, but its position must still follow the Excel order.
 - If `Builder Margin` or `Margin` appears as a short final section, do not split the Builder Margin heading, rows, subtotal, `TOTAL PRICE`, and notes awkwardly across pages. Keep that final block together when it fits.
+
+### Version 2 Standard Builder Margin Style
+
+Use the Kookai Parramatta form for every Version 2 quote that contains Builder Margin / 10% Margin. Version 1 keeps its original summary-row behavior:
+
+1. Add a `BUILDER MARGIN` section title using the standard section-title styling.
+2. Add the standard table header: `NO.`, `AREA / LOCATION`, `DESCRIPTION / SPECIFICATION`, `QTY`, `UNIT`.
+3. Add one row with `NO. 1`, `AREA / LOCATION: Builder Margin`, and `DESCRIPTION / SPECIFICATION: 10% Margin`; leave QTY/UNIT blank unless Excel says otherwise.
+4. Add a right-aligned light blue/grey `BUILDER MARGIN SUB TOTAL` box with the Excel margin amount and `+ GST`.
+5. Place the dark `TOTAL PRICE` box immediately after the Builder Margin block.
+6. Keep the Builder Margin section, its subtotal, `TOTAL PRICE`, and notes together when they fit.
+7. In Version 2, do not display ordinary `SUB TOTAL` when this Builder Margin block is present; retain the source subtotal only for reconciliation.
 
 ### Price-Source And Summary Detection
 
@@ -569,10 +583,12 @@ Before delivering the PDF:
   - Confirm ordinary per-section subtotal boxes are shown after each major section when present.
   - Confirm required Excel summary rows are also shown when present.
   - Confirm `CONSTRUCTION SUB TOTAL` is not displayed, even when it exists in Excel, while its value is still used for reconciliation.
-  - Confirm only the exact `CONSTRUCTION SUB TOTAL` row is hidden. Confirm ordinary `SUB TOTAL` and `10% MARGIN` / `10% BUILDER MARGIN` remain visible when present.
+  - Confirm only the exact `CONSTRUCTION SUB TOTAL` row is hidden by the Version 2 rule. If Builder Margin exists, also confirm ordinary `SUB TOTAL` is hidden while `10% MARGIN` / `10% BUILDER MARGIN` remains represented by the standalone Builder Margin block.
   - Confirm each section subtotal uses the verified customer-facing sell price rather than an internal cost total.
   - Confirm displayed section sell prices add to the source `SUB TOTAL` and `SUB TOTAL + MARGIN` equals `TOTAL PRICE` within $0.02.
   - Confirm the expected summary list was built independently from the source workbook and did not pass vacuously because the parser returned an empty list.
+  - When Builder Margin exists in Version 2, confirm ordinary `SUB TOTAL` is absent and continue using its source value for reconciliation.
+  - Whenever Builder Margin exists in Version 2, confirm the separate `BUILDER MARGIN` section, its `NO. 1` row, `BUILDER MARGIN SUB TOTAL`, amount, and following `TOTAL PRICE` are present and in order.
   - Confirm any optional extra breakdown column is shown only when the Excel source/user request makes it customer-facing, and only for the relevant section.
   - Confirm every workbook was scanned for Joinery/customer-facing breakdown prices.
   - If Joinery has a breakdown price column, confirm `BREAKDOWN PRICE` appears in the Joinery table, every breakdown amount appears in Excel order, and no line-item breakdown amount has `+ GST` unless Joe requested it.

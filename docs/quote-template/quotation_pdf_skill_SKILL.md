@@ -64,7 +64,7 @@ However, Version 1 must still preserve real Excel summary rows when they exist:
 - `Equipment Sub Total:`
 - any other customer-facing subtotal/summary rows in columns A-E
 
-These rows are not optional. They must stay visible, stay in Excel order, include `+ GST`, and appear before `TOTAL PRICE` when that is their Excel position.
+These rows are not optional in Version 1. They must stay visible, stay in Excel order, include `+ GST`, and appear before `TOTAL PRICE` when that is their Excel position.
 
 Version 1 ends with a dark right-aligned `TOTAL PRICE` box.
 
@@ -79,7 +79,19 @@ Version 2 means the client should see:
 Do not treat Excel summary rows as duplicates of ordinary section subtotals.
 
 In Version 2, do not display `CONSTRUCTION SUB TOTAL`, even if it exists in Excel. Read it and use it for reconciliation only. This exception does not apply to Builder Margin, Margin, Equipment Sub Total, or other required summaries.
-Match that exception by normalized label, not by a loose `subtotal` test. Hide only the exact `Construction Sub Total` row. If Excel contains `Sub Total` and `10% Margin` / `10% Builder Margin`, both rows must remain visible in Excel order before `TOTAL PRICE`.
+Match that exception by normalized label, not by a loose `subtotal` test. Hide only the exact `Construction Sub Total` row by default. When Builder Margin / 10% Margin exists, hide ordinary `Sub Total` from the customer PDF and retain its source value for reconciliation.
+
+When no Builder Margin exists, preserve ordinary `Sub Total` unless the user explicitly asks otherwise for that quote/version.
+
+In Version 2, whenever Builder Margin / 10% Margin exists, always use this structure:
+
+1. `BUILDER MARGIN` section heading.
+2. Normal scope-table header.
+3. One row: `NO. 1`, `AREA / LOCATION: Builder Margin`, `DESCRIPTION / SPECIFICATION: 10% Margin`.
+4. `BUILDER MARGIN SUB TOTAL` with the Excel margin amount and `+ GST`.
+5. `TOTAL PRICE` immediately after the Builder Margin block.
+
+Do not display ordinary `Sub Total` when this Builder Margin block is present. Continue using the hidden source subtotal for arithmetic checks.
 
 If Excel contains:
 
@@ -139,6 +151,8 @@ Rules:
 - Summary labels and amounts may be stored in different columns. Find the label in the customer-facing/print area, read the amount from the same source row, and preserve the source order.
 - Build the expected summary list independently from the source workbook. Never let an empty parser result count as a passing summary check when the workbook contains summary labels.
 - In Version 2, displayed section subtotals must use customer-facing sell prices and add to the source `Sub Total`; source `Sub Total + Margin` must reconcile to `TOTAL PRICE` within $0.02.
+- In Version 2, when ordinary `Sub Total` is hidden because Builder Margin exists, record that display rule and continue the same reconciliation using the hidden source value.
+- In Version 2, whenever Builder Margin exists, verify the separate Builder Margin section, row, subtotal, amount, and following total rather than accepting a compact margin row.
 
 Common required labels:
 
