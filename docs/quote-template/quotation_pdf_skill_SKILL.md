@@ -25,8 +25,9 @@ Do not guess the version.
 
 ## Non-Negotiable Rules
 
-- Read only customer-facing scope columns A-E for visible scope content.
-- Do not expose internal costing columns F-M unless the user explicitly asks.
+- Read only customer-facing scope columns A-E for visible scope text.
+- Do not expose internal costing columns F-M wholesale. A verified customer-facing section sell price, summary value, or explicit breakdown column may sit outside A-E and may be selectively read; never expose the surrounding internal costing data.
+- Do not assume a fixed subtotal column. Distinguish customer-facing sell prices from internal raw-cost totals by checking the workbook layout, labels, formulas, and reconciliation to `Sub Total` and `Total Price`.
 - Extra price/breakdown columns are not default, but every workbook must be scanned for them during inspection, especially inside `Joinery Works`.
 - Add an optional breakdown column when the user explicitly says it is customer-facing, when the Excel header clearly identifies it as a customer-facing breakdown price column, or when a dedicated line-item price column reconciles to the section subtotal.
 - If `Joinery Works` contains customer-facing line-item breakdown prices, such as a `BREAKDOWN PRICE` / Excel column H breakdown in Kookai quotes, the PDF must show a `BREAKDOWN PRICE` column in the Joinery table.
@@ -78,6 +79,7 @@ Version 2 means the client should see:
 Do not treat Excel summary rows as duplicates of ordinary section subtotals.
 
 In Version 2, do not display `CONSTRUCTION SUB TOTAL`, even if it exists in Excel. Read it and use it for reconciliation only. This exception does not apply to Builder Margin, Margin, Equipment Sub Total, or other required summaries.
+Match that exception by normalized label, not by a loose `subtotal` test. Hide only the exact `Construction Sub Total` row. If Excel contains `Sub Total` and `10% Margin` / `10% Builder Margin`, both rows must remain visible in Excel order before `TOTAL PRICE`.
 
 If Excel contains:
 
@@ -134,6 +136,9 @@ Rules:
 - Do not merge it into another subtotal.
 - Version 1 preserves every real Excel summary row.
 - Version 2 preserves required summary rows but hides `Construction Sub Total` from the customer PDF.
+- Summary labels and amounts may be stored in different columns. Find the label in the customer-facing/print area, read the amount from the same source row, and preserve the source order.
+- Build the expected summary list independently from the source workbook. Never let an empty parser result count as a passing summary check when the workbook contains summary labels.
+- In Version 2, displayed section subtotals must use customer-facing sell prices and add to the source `Sub Total`; source `Sub Total + Margin` must reconcile to `TOTAL PRICE` within $0.02.
 
 Common required labels:
 

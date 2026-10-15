@@ -333,6 +333,7 @@ The rule is not to force these rows into every PDF. The rule is:
 - Do not invent summary rows that are not in the Excel source.
 - Version 1 preserves all real Excel summary rows, including `Construction Sub Total`.
 - Version 2 preserves real Excel summary rows except `Construction Sub Total`, which must be hidden from the customer PDF while still being used for reconciliation.
+- The Version 2 exception is an exact normalized-label rule. Hide only `Construction Sub Total`; never hide ordinary `Sub Total`, `10% Margin`, `10% Builder Margin`, Equipment Sub Total, or another summary because its label contains `subtotal` or `margin`.
 - Version 1 hides ordinary per-section subtotals, but it still preserves these Excel summary rows.
 - Version 2 shows ordinary per-section subtotals and preserves the remaining required Excel summary rows.
 
@@ -347,6 +348,7 @@ Common summary rows that may appear:
 Rules:
 
 - If Excel shows `10 % Builder Margin`, show it explicitly.
+- If Excel shows ordinary `Sub Total` and `10% Margin` / `10% Builder Margin`, show both explicitly in Excel order before `TOTAL PRICE`, including in Version 2.
 - If Excel shows `Construction Sub Total`, show it explicitly in Version 1 but do not display it in Version 2.
 - If Excel shows `Equipment Sub Total`, show it explicitly.
 - In Version 1, do not treat these rows as optional section subtotals. They are Excel summary rows and must remain visible.
@@ -369,6 +371,15 @@ Rules:
 - If there is an `Equipment Delivery` section, preserve it in the same order as Excel.
 - If there is a second Excel `Others` section used only for equipment delivery, it may be renamed customer-facing as `Equipment Delivery`, but its position must still follow the Excel order.
 - If `Builder Margin` or `Margin` appears as a short final section, do not split the Builder Margin heading, rows, subtotal, `TOTAL PRICE`, and notes awkwardly across pages. Keep that final block together when it fits.
+
+### Price-Source And Summary Detection
+
+- Columns A-E remain the default source for visible scope text, but do not assume every customer-facing price is in A-E or that every value outside A-E is internal.
+- Inspect the workbook print area, visible formatting, labels, formulas, and total relationships to identify the customer-facing section sell-price cells.
+- Never use a hidden internal raw-cost section total merely because it is easy to sum. The displayed Version 2 section amounts must be the customer-facing sell prices that reconcile to the Excel `Sub Total`.
+- Summary labels and amounts may occupy different columns on the same row. Detect the label first, then resolve the amount from that row; do not hard-code one label column and one amount column for every workbook.
+- Build the expected list of source summary rows independently of the PDF rendering collection. An empty detected list must trigger a second source scan, not a passing result, when labels such as `Sub Total`, `Margin`, `Construction Sub Total`, `Equipment Sub Total`, or `Total Price` exist.
+- Reconcile displayed section sell prices to source `Sub Total`, then reconcile `Sub Total + Margin` to `TOTAL PRICE`, allowing no more than $0.02 for rounding.
 
 ## Subtotal And Total Alignment
 
@@ -558,6 +569,10 @@ Before delivering the PDF:
   - Confirm ordinary per-section subtotal boxes are shown after each major section when present.
   - Confirm required Excel summary rows are also shown when present.
   - Confirm `CONSTRUCTION SUB TOTAL` is not displayed, even when it exists in Excel, while its value is still used for reconciliation.
+  - Confirm only the exact `CONSTRUCTION SUB TOTAL` row is hidden. Confirm ordinary `SUB TOTAL` and `10% MARGIN` / `10% BUILDER MARGIN` remain visible when present.
+  - Confirm each section subtotal uses the verified customer-facing sell price rather than an internal cost total.
+  - Confirm displayed section sell prices add to the source `SUB TOTAL` and `SUB TOTAL + MARGIN` equals `TOTAL PRICE` within $0.02.
+  - Confirm the expected summary list was built independently from the source workbook and did not pass vacuously because the parser returned an empty list.
   - Confirm any optional extra breakdown column is shown only when the Excel source/user request makes it customer-facing, and only for the relevant section.
   - Confirm every workbook was scanned for Joinery/customer-facing breakdown prices.
   - If Joinery has a breakdown price column, confirm `BREAKDOWN PRICE` appears in the Joinery table, every breakdown amount appears in Excel order, and no line-item breakdown amount has `+ GST` unless Joe requested it.

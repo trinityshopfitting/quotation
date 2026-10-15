@@ -48,14 +48,15 @@ Important summary rows to detect:
 - any other customer-facing subtotal/summary row in columns A-E
 
 Do not assume these rows exist in every workbook.
+Do not assume their labels and amounts always use the same fixed columns. Scan the customer-facing/print area for the label, then resolve the amount from that same source row and confirm its arithmetic relationship to the surrounding section totals and final total.
 
 ## 3. Parse Customer Scope
 
 For each major section:
 
 1. Start the section at the Excel section header.
-2. Read only columns A-E for visible customer-facing scope.
-3. Do not expose columns F-M.
+2. Read only columns A-E for visible customer-facing scope text.
+3. Do not expose columns F-M wholesale. Section sell prices, summary values, or explicit breakdown prices may sit outside A-E; selectively read them only after verifying they are customer-facing. Never substitute a hidden internal raw-cost total for a customer-facing sell price.
 4. Skip blank-only rows.
 5. Create a visible PDF row for every row with QTY or UNIT in D-E.
 6. Create a visible PDF row for each separate measurable item, even if A or B is blank.
@@ -128,6 +129,8 @@ Show:
 Mandatory:
 
 - If Excel has `Construction Sub Total:`, read it and use it for reconciliation, but do not display it in a Version 2 customer PDF.
+- Hide only a row whose normalized label is exactly `Construction Sub Total`. Do not treat `Sub Total`, `10% Margin`, `10% Builder Margin`, or another summary label as the same row.
+- If Excel contains `Sub Total` and `10% Margin` / `10% Builder Margin`, show both in Excel order before `TOTAL PRICE` and preserve their source amounts.
 - The Version 2 `Construction Sub Total` exception does not apply to Builder Margin, Margin, Equipment Sub Total, or other required summaries.
 - If Excel has `Equipment Sub Total:`, show `EQUIPMENT SUB TOTAL`.
 - If Excel has `Equipment Works`, `Equipment Delivery`, and `Equipment Sub Total`, show all three in Excel order.
@@ -247,6 +250,12 @@ After `TOTAL PRICE`, add notes:
 
 Produce or perform a reconciliation check:
 
+- Build the expected section-subtotal and summary-row lists directly from the source workbook before rendering. Do not derive the expected list from the same filtered output collection used to build the PDF.
+- A missing/empty detected list is not proof that no summaries exist. Independently scan the source for normalized labels such as `Sub Total`, `Margin`, `Construction Sub Total`, `Equipment Sub Total`, and `Total Price`; fail closed when source labels exist but the expected list is empty.
+- For Version 2, identify each section's customer-facing sell price from the workbook layout/formula chain. Do not use an internal cost column merely because it contains a convenient section sum.
+- Confirm displayed section sell prices add to the source `Sub Total` when that row exists.
+- Confirm `Sub Total + Margin = Total Price` using the source values, within a rounding tolerance of $0.02.
+- Confirm every detected summary label and amount appears exactly once in the PDF, except the exact `Construction Sub Total` row intentionally hidden in Version 2.
 - List each section.
 - Count source rows with QTY/UNIT.
 - Count PDF rows with QTY/UNIT.
@@ -275,6 +284,10 @@ Reject the PDF and fix it if:
 - A QTY/UNIT row is missing.
 - A section is missing.
 - A required source summary row is missing, except for `Construction Sub Total` intentionally hidden in Version 2.
+- `Sub Total` or `10% Margin` / `10% Builder Margin` is omitted because the Version 2 `Construction Sub Total` exception was applied too broadly.
+- A Version 2 section subtotal uses an internal raw-cost value instead of the verified customer-facing sell price.
+- Source summary labels exist but reconciliation passes with an empty expected-summary list.
+- Displayed section prices do not reconcile to source `Sub Total`, or source `Sub Total + Margin` does not reconcile to `Total Price`.
 - Internal columns F-M appear.
 - An optional breakdown column is invented or applied to sections where Excel/user request did not ask for it.
 - A customer-facing Joinery breakdown column exists in Excel but the PDF omits `BREAKDOWN PRICE` or misses any breakdown amount.
